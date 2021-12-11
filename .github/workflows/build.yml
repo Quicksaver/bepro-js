@@ -7,20 +7,17 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.17.0]
     steps:
-      - uses: actions/checkout@v1
-      - name: Install Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
 
-      - name: npm install
-        run: npm install
+      - name: yarn install
+        run: yarn install
 
       - name: Start ganache and test solution
-        run: npm run ganache:start & npm run test
+        run: yarn ganache:start & yarn test
         env:
           CI: true
